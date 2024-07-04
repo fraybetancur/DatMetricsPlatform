@@ -30,7 +30,7 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Formulario Interactivo</h1>
+      <h1>Formulario Interactivo de prueba</h1>
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="name">Nombre:</label>
