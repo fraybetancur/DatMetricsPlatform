@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
@@ -5,13 +6,15 @@ const { Client } = require('pg');
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Configuración de bodyParser para manejar datos POST
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'build')));
 
-// Configurar la conexión a PostgreSQL
 const client = new Client({
-  connectionString: process.env.DATABASE_URL, // Usar la cadena de conexión de la base de datos de PostgreSQL
+  user: process.env.PGUSER,
+  host: process.env.PGHOST,
+  database: process.env.PGDATABASE,
+  password: process.env.PGPASSWORD,
+  port: process.env.PGPORT,
   ssl: {
     rejectUnauthorized: false
   }
@@ -22,7 +25,6 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
-// Manejar el envío del formulario
 app.post('/submit', (req, res) => {
   const { name } = req.body;
   const query = 'INSERT INTO users(name) VALUES($1)';
